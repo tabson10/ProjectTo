@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml" >
+<head th:fragment="common-header">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Sklep z owocami</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/navbars/" />
+    <link rel="icon" href="/img/logo.png" />
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/bootstrap.css" rel="stylesheet" />
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-default navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapse" type="button" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only"></span>
+                    <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Strona główna</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="navbar-nav nav">
+                    <li class="active">
+                        <a class="nav-link" href="#">Przeglądaj</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">Kontakt</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active">
+                        <a class="nav-link" href="#">Moje konto</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">Koszyk</a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">Wyloguj</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
+
+<div th:fragment="body-bottom-scripts">
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</div>
+</body>
+</html>

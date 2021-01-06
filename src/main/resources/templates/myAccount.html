@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+<body>
+<div th:replace="common/header :: navbar" />
+
+<div class="container">
+    <div class="row" style="margin-bottom: -100px;">
+        <div class="col-xs-8">
+            <h2 class="section-headline"><span>Konto Użytkownika</span></h2>
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+    </div>
+    <hr style="position: absolute; width: 90%; height: 6px; background-color: #333; z-index: -1; margin-top: 70px;"/>
+
+
+    <div class="row" style="margin-top: 120px">
+        <div class="col-xs-9 col-xs-offset-3">
+            <ul class="nav nav-tabs">
+                <li><a href="#tab-1" data-toggle="tab"><span style="color: red;">Utwórz nowe konto</span></a></li>
+                <li><a href="#tab-2" data-toggle="tab"><span style="color: red;">Zaloguj się</span></a></li>
+                <li><a href="#tab-3" data-toggle="tab"><span style="color: red;">Zapomniałem hasła</span></a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div class="tab-pane fade" id="tab-1">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none">
+                            <div class="panel-body" style="background-color: #ededed; margin-top: 20px;">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="newUsername">Nazwa Użytkownika</label>
+                                        <input required="required" type="text" class="form-control" id="newUsername" name="username" />
+                                        <p style="color: #828282">Wprowadź nazwę użytkownika</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email</label>
+                                        <input required="required" type="text" class="form-control" id="email" name="email" />
+                                        <p style="color: #828282">Wprowadź email</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Hasło</label>
+                                        <input required="required" type="password" class="form-control" id="password" name="password" />
+                                        <p style="color: #828282">Wprowadź hasło</p>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Utwórz nowe konto</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-2">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none">
+                            <div class="panel-body" style="background-color: #ededed; margin-top: 20px;">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="newUsername">Nazwa Użytkownika</label>
+                                        <input required="required" type="text" class="form-control" id="newUsername" name="username" />
+                                        <p style="color: #828282">Wprowadź nazwę użytkownika</p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="password">Hasło</label>
+                                        <input required="required" type="password" class="form-control" id="password" name="password" />
+                                        <p style="color: #828282">Wprowadź hasło</p>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Zaloguj się</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-3">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none">
+                            <div class="panel-body" style="background-color: #ededed; margin-top: 20px;">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="recoverEmail">Email</label>
+                                        <input required="required" type="text" class="form-control" id="recoverEmail" name="email" />
+                                        <p style="color: #828282">Wprowadź email</p>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Przypomnij hasło</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

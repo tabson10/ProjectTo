@@ -22,6 +22,7 @@ public class User implements UserDetails {
     @Column(name="ID_UZYTKOWNIKA", nullable = false, updatable = false)
     private int id;
 
+    private String username;
     private String email;
 
     @Column(name = "haslo")

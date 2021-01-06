@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml" >
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:fragment="common-header">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -33,21 +33,24 @@
             <div id="navbar" class="collapse navbar-collapse">
                 <ul class="navbar-nav nav">
                     <li class="active">
-                        <a class="nav-link" href="#">Przeglądaj</a>
+                        <a href="#">Przeglądaj</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Kontakt</a>
+                        <a href="#">Kontakt</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active">
-                        <a class="nav-link" href="#">Moje konto</a>
+                        <a sec:authorize="isAnonymous()" th:href="@{/login}">Moje konto</a>
+                    </li>
+                    <li class="active">
+                        <a sec:authorize="isAuthenticated()" th:href="@{/myProfile}">Moje konto</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Koszyk</a>
+                        <a href="#">Koszyk</a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">Wyloguj</a>
+                        <a sec:authorize="isAuthenticated()" th:href="@{/logout}">Wyloguj</a>
                     </li>
                 </ul>
             </div>

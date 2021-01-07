@@ -54,6 +54,8 @@ public class User implements UserDetails {
         return authorities;
     }
 
+    public User() {}
+
     public int getId() {
         return id;
     }

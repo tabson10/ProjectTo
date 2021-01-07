@@ -13,7 +13,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Data
 @Table(name = "uzytkownicy")
 public class User implements UserDetails {
 
@@ -22,7 +21,10 @@ public class User implements UserDetails {
     @Column(name="ID_UZYTKOWNIKA", nullable = false, updatable = false)
     private int id;
 
+    @Column
     private String username;
+
+    @Column
     private String email;
 
     @Column(name = "haslo")
@@ -36,6 +38,8 @@ public class User implements UserDetails {
 
     @Column(name = "nr_telefonu")
     private String phoneNumber;
+
+    @Column
     private boolean enabled=true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -48,6 +52,71 @@ public class User implements UserDetails {
         userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
 
         return authorities;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public Set<UserRole> getUserRoles() {
+        return userRoles;
+    }
+
+    public void setUserRoles(Set<UserRole> userRoles) {
+        this.userRoles = userRoles;
     }
 
     @Override

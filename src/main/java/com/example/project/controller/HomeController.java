@@ -1,9 +1,11 @@
 package com.example.project.controller;
 
+import com.example.project.domain.Batch;
 import com.example.project.domain.User;
 import com.example.project.domain.security.PasswordResetToken;
 import com.example.project.domain.security.Role;
 import com.example.project.domain.security.UserRole;
+import com.example.project.service.BatchService;
 import com.example.project.service.UserService;
 import com.example.project.service.impl.UserSecurityService;
 import com.example.project.utility.MailConstructor;
@@ -24,10 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Locale;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -43,6 +42,9 @@ public class HomeController {
 
     @Autowired
     UserSecurityService userSecurityService;
+
+    @Autowired
+    private BatchService batchService;
 
     @RequestMapping("/")
     public String index() {
@@ -167,5 +169,12 @@ public class HomeController {
     public String myProfile(Model model){
 
         return "myProfile";
+    }
+
+    @RequestMapping("/browse")
+    public String browse(Model model){
+        List<Batch> batchList = batchService.findAll();
+        model.addAttribute("batchList", batchList);
+        return "browse";
     }
 }

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+<body>
+<div th:replace="common/header :: navbar" />
+
+<div class="container">
+    <div class="row" style="margin-bottom: -100px;">
+        <div class="col-xs-8">
+            <h2 class="section-headline">
+                <h2 class="section-headline"><span>Przeglądaj</span></h2>
+            </h2>
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+    </div>
+    <hr style="position: absolute; width: 90%; height: 6px; background-color: #333; z-index: -1; margin-top: 70px;"/>
+
+    <div class="row" style="margin-top: 60px;">
+        <div class="col-xs-9 col-xs-offset-3">
+            <div th:if="${emptyList}">
+                <h5 style="font-style: italic">Brak wyników</h5>
+            </div>
+
+            <table border="0" id="batchList">
+                <thead><tr><th></th></tr></thead>
+                <tbody>
+                <tr class="batch-item" data-th-each="batch: ${batchList}">
+                <td>
+                    <div th:if="${batch != null}">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <img class="img-responsive browse" th:src="#{adminPath}+@{/img/batch/}+${batch.batchId}+'.png'" />
+                            </div>
+                            <div class="col-xs-9">
+                                <h4 th:text="${batch.type}"></h4>
+                                <span style="font-size: x-large; color: #db3208;">zł
+                                    <span th:text="${#numbers.formatDecimal(batch.price, 0, 'COMMA', 2, 'POINT')}"></span></span><br />
+                                <span>Ilość: </span><span th:text="${batch.quantity}"></span><span> kg</span>
+                                <p th:text="${#strings.abbreviate(batch.description, 500)}"></p>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+</div>
+
+<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

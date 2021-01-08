@@ -25,6 +25,7 @@ public class ProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        /*Creating test user
         User user1 = new User();
         user1.setFirstName("Test");
         user1.setLastName("test");
@@ -38,6 +39,8 @@ public class ProjectApplication implements CommandLineRunner {
         userRoles.add(new UserRole(user1, role1));
 
         userService.createUser(user1, userRoles);
+
+         */
     }
 
 }

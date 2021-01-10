@@ -1,16 +1,18 @@
 package com.example.project.service;
 
 import com.example.project.domain.User;
+import com.example.project.domain.UserBilling;
+import com.example.project.domain.UserPayment;
+import com.example.project.domain.UserShipping;
 import com.example.project.domain.security.PasswordResetToken;
 import com.example.project.domain.security.UserRole;
-import com.example.project.repository.PasswordResetTokenRepository;
-import com.example.project.repository.RoleRepository;
-import com.example.project.repository.UserRepository;
+import com.example.project.repository.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -26,6 +28,12 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private UserPaymentRepository userPaymentRepository;
+
+    @Autowired
+    private UserShippingRepository userShippingRepository;
 
     @Override
     public PasswordResetToken getPasswordResetToken(final String token) {
@@ -70,6 +78,52 @@ public class UserServiceImpl implements UserService{
     @Override
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public void updateUserBilling(UserBilling userBilling, UserPayment userPayment, User user) {
+        userPayment.setUser(user);
+        userPayment.setUserBilling(userBilling);
+        userPayment.setDefaultPayment(true);
+        userBilling.setUserPayment(userPayment);
+        user.getUserPaymentList().add(userPayment);
+        save(user);
+    }
+
+    @Override
+    public void setUserDefaultPayment(int id, User user) {
+        List<UserPayment> userPaymentList = (List<UserPayment>) userPaymentRepository.findAll();
+
+        for(UserPayment userPayment: userPaymentList) {
+            if(userPayment.getId() == id) {
+                userPayment.setDefaultPayment(true);
+            } else {
+                userPayment.setDefaultPayment(false);
+            }
+            userPaymentRepository.save(userPayment);
+        }
+    }
+
+    @Override
+    public void updateUserShipping(UserShipping userShipping, User user) {
+        userShipping.setUser(user);
+        userShipping.setDefaultAddress(true);
+        user.getUserShippingList().add(userShipping);
+        save(user);
+    }
+
+    @Override
+    public void setUserDefaultShippingAddress(int id, User user) {
+        List<UserShipping> userShippingList = (List<UserShipping>) userShippingRepository.findAll();
+
+        for(UserShipping userShipping: userShippingList) {
+            if(userShipping.getId() == id) {
+                userShipping.setDefaultAddress(true);
+            } else {
+                userShipping.setDefaultAddress(false);
+            }
+            userShippingRepository.save(userShipping);
+        }
     }
 
 

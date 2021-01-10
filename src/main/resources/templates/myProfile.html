@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pl" xmlns:th="http://www.w3.org/1000/xhtml">
+<html lang="pl" xmlns:th="http://www.w3.org/1000/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="common/header :: common-header" />
 
 <body>
@@ -24,7 +24,7 @@
             <ul class="nav nav-tabs">
                 <li th:classappend="${classActiveEdit}? 'active'"><a href="#tab-1" data-toggle="tab"><span style="color: red;">Edytuj</span></a></li>
                 <li th:classappend="${classActiveOrders}? 'active'"><a href="#tab-2" data-toggle="tab"><span style="color: red;">Zamówienia</span></a></li>
-                <li th:classappend="${classActiveBilling}? 'active'"><a href="#tab-3" data-toggle="tab"><span style="color: red;">Rachunki</span></a></li>
+                <li th:classappend="${classActiveBilling}? 'active'"><a href="#tab-3" data-toggle="tab"><span style="color: red;">Płatności</span></a></li>
                 <li th:classappend="${classActiveShipping}? 'active'"><a href="#tab-4" data-toggle="tab"><span style="color: red;">Wysyłka</span></a></li>
             </ul>
 
@@ -82,8 +82,286 @@
 
                                     <p style="color: #828282">Aby zmienić hasło, wprowadz nowe w wybrane pola.</p>
 
-                                    <button type="submit" class="btn btn-primary">Utwórz nowe konto</button>
+                                    <button type="submit" class="btn btn-primary">Aktualizuj</button>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-2" th:classappend="${classActiveOrders}? 'in active'">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none">
+                            <div class="panel-body" style="background-color: #ededed; margin-top: 20px;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-3" th:classappend="${classActiveBilling}? 'in active'">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none">
+                            <div class="panel-body" style="background-color: #ededed; margin-top: 20px;">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active">
+                                        <a th:href="@{/listOfCreditCards}" th:style="${listOfCreditCards}? 'color: red'">Lista kart kredytowych</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        <a th:href="@{/addNewCreditCard}" th:style="${addNewCreditCard}? 'color: red'">Dodaj(Edytuj) informacje o karcie kredytowej</a>
+                                    </li>
+                                </ol>
+
+                                <div th:if="${listOfCreditCards}">
+                                    <form th:action="@{/setDefaultPayment}" method="post">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Domyślna</th>
+                                                <th>Karta kredytowa</th>
+                                                <th>Operacje</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="userPayment : ${userPaymentList}">
+                                                <td>
+                                                    <input type="radio" name="defaultUserPaymentId" th:value="${userPayment.id}" th:checked="${userPayment.defaultPayment}"/>
+                                                </td>
+                                                <td th:text="${userPayment.cardName}">
+                                                </td>
+                                                <td>
+                                                    <a th:href="@{/updateCreditCard(id=${userPayment.id})}">Edytuj</a>&nbsp &nbsp &nbsp
+                                                    <a th:href="@{/removeCreditCard(id=${userPayment.id})}">Usuń</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-primary" type="submit">Zapisz</button>
+                                    </form>
+                                </div>
+
+                                <div th:if="${addNewCreditCard}">
+                                    <form th:action="@{addNewCreditCard}" method="post">
+                                        <div class="bg-info" th:if="${updateUserPaymentInfo}">Zaktualizowano.</div>
+
+                                        <input hidden="hidden" name="id" th:value="${userPayment.id}">
+
+                                        <div class="form-group">
+                                            <h5>* Nazwa twojej karty</h5>
+                                            <input type="text" class="form-control" id="cardName" placeholder="Nazwa karty" th:name="cardName" required="required" th:value="${userPayment.cardName}"/>
+                                        </div>
+                                        <hr />
+                                        <div class="form-group">
+                                            <h4>Dane do faktury</h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label for="billingName">* Imię i Nazwisko</label>
+                                                    <input type="text" class="form-control" id="billingName" placeholder="Imię i nazwisko" th:name="userBillingName" required="required" th:value="${userBilling.userBillingName}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="billingStreet">* Ulica</label>
+                                                    <input type="text" class="form-control" id="billingStreet" placeholder="Ulica" th:name="userBillingStreet" required="required" th:value="${userBilling.userBillingStreet}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="billingCity">* Miasto</label>
+                                                    <input type="text" class="form-control" id="billingCity" placeholder="Miasto" th:name="userBillingCity" required="required" th:value="${userBilling.userBillingCity}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="billingVoivodeship">* Województwo</label>
+                                                    <input type="text" class="form-control" id="billingVoivodeship" placeholder="Województwo" th:name="userBillingVoivodeship" required="required" th:value="${userBilling.userBillingVoivodeship}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label for="billingPostcode">* Kod Pocztowy</label>
+                                                    <input type="text" class="form-control" id="billingPostcode" placeholder="00-000"
+                                                           th:name="userBillingPostcode" required="required" th:value="${userBilling.userBillingPostcode}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="billingHouseNumber">* Numer domu</label>
+                                                    <input type="text" class="form-control" id="billingHouseNumber" placeholder="Numer domu"
+                                                           th:name="userBillingHouseNumber" required="required" th:value="${userBilling.userBillingHouseNumber}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="billingApartmentNumber">Numer mieszkania</label>
+                                                    <input type="text" class="form-control" id="billingApartmentNumber" placeholder="Numer domu"
+                                                           th:name="userBillingApartmentNumber" th:value="${userBilling.userBillingApartmentNumber}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr />
+                                        <div class="form-group">
+                                            <h4>Dane Karty kredytowej</h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <img src="/img/creditcard.png" class="img-responsive" /><br />
+                                                <div class="form-group">
+                                                    <label for="cardType">* Wybierz typ karty: </label>
+                                                    <select class="form-control" id="cardType" th:name="type" th:value="${userPayment.type}">
+                                                        <option value="visa">Visa</option>
+                                                        <option value="mastercard">Mastercard</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="cardHolder">* Imię i nazwisko właściciela: </label>
+                                                    <input type="text" class="form-control" id="cardHolder" placeholder="Imię i nazwisko"
+                                                           th:name="holderName" required="required" th:value="${userPayment.holderName}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="cardNumber">* Numer karty: </label>
+                                                    <div class="input-group">
+                                                        <input type="tel" class="form-control" id="cardNumber" placeholder="Numer karty"
+                                                               th:name="cardNumber" required="required" th:value="${userPayment.cardNumber}"/>
+                                                        <span class="input-group-addon"><i class="fa fa-credit-card" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <label>* Dzień i miesiąc: </label>
+                                        <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-xs-6">
+                                                        <select class="form-control" name="expiryMonth" required="required" th:value="${userPayment.expiryMonth}">
+                                                            <option disabled="disabled">-- Miesiąc --</option>
+                                                            <option value="01">01</option>
+                                                            <option value="02">02</option>
+                                                            <option value="03">03</option>
+                                                            <option value="04">04</option>
+                                                            <option value="05">05</option>
+                                                            <option value="06">06</option>
+                                                            <option value="07">07</option>
+                                                            <option value="08">08</option>
+                                                            <option value="09">09</option>
+                                                            <option value="10">10</option>
+                                                            <option value="11">11</option>
+                                                            <option value="12">12</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <select class="form-control" name="expiryYear" required="required" th:value="${userPayment.expiryYear}">
+                                                            <option disabled="disabled">-- Rok --</option>
+                                                            <option value="21">21</option>
+                                                            <option value="22">22</option>
+                                                            <option value="23">23</option>
+                                                            <option value="24">24</option>
+                                                            <option value="25">25</option>
+                                                            <option value="26">26</option>
+                                                            <option value="27">27</option>
+                                                            <option value="28">28</option>
+                                                            <option value="29">29</option>
+                                                            <option value="30">30</option>
+                                                        </select>
+                                                    </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label for="cvc">CVC: </label>
+                                                    <div class="input-group">
+                                                        <input type="tel" class="form-control" id="cvc" placeholder="000"
+                                                               th:name="cvc" required="required" max="999" th:value="${userPayment.cvc}"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">Zapisz</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-4" th:classappend="${classActiveShipping}? 'in active'">
+                    <div class="panel-group">
+                        <div class="panel panel-default" style="border: none">
+                            <div class="panel-body" style="background-color: #ededed; margin-top: 20px;">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item active">
+                                        <a th:href="@{/listOfShippingAddresses}" th:style="${listOfShippingAddresses}? 'color: red'">Lista Adresów</a>
+                                    </li>
+                                    <li class="breadcrumb-item active">
+                                        <a th:href="@{/addNewShippingAddress}" th:style="${addNewShippingAddress}? 'color: red'">Dodaj(Edytuj) Adres</a>
+                                    </li>
+                                </ol>
+
+                                <div th:if="${listOfShippingAddresses}">
+                                    <form th:action="@{/setDefaultShippingAddress}" method="post">
+                                        <table class="table">
+                                            <thead>
+                                            <tr>
+                                                <th>Domyślny</th>
+                                                <th>Adres</th>
+                                                <th>Operacje</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="userShipping : ${userShippingList}">
+                                                <td>
+                                                    <input type="radio" name="defaultShippingAddressId" th:value="${userShipping.id}" th:checked="${userShipping.defaultAddress}"/>
+                                                </td>
+                                                <td><span th:text="${userShipping.userShippingStreet}"></span> <span th:text="${userShipping.userShippingHouseNumber}"></span>, <span th:text="${userShipping.userShippingCity}"></span>
+                                                </td>
+                                                <td>
+                                                    <a th:href="@{/updateShippingAddress(id=${userShipping.id})}">Edytuj</a>&nbsp &nbsp &nbsp
+                                                    <a th:href="@{/removeShippingAddress(id=${userShipping.id})}">Usuń</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <button class="btn btn-primary" type="submit">Zapisz</button>
+                                    </form>
+                                </div>
+                                <div th:if="${addNewShippingAddress}">
+                                    <form th:action="@{addNewShippingAddress}" method="post">
+                                        <div class="bg-info" th:if="${updateUserShippingInfo}">Zaktualizowano.</div>
+
+                                        <input hidden="hidden" name="id" th:value="${userShipping.id}">
+
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label for="shippingName">* Imię i Nazwisko</label>
+                                                    <input type="text" class="form-control" id="shippingName" placeholder="Imię i nazwisko" th:name="userShippingName" required="required" th:value="${userShipping.userShippingName}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shippingStreet">* Ulica</label>
+                                                    <input type="text" class="form-control" id="shippingStreet" placeholder="Ulica" th:name="userShippingStreet" required="required" th:value="${userShipping.userShippingStreet}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shippingCity">* Miasto</label>
+                                                    <input type="text" class="form-control" id="shippingCity" placeholder="Miasto" th:name="userShippingCity" required="required" th:value="${userShipping.userShippingCity}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shippingVoivodeship">* Województwo</label>
+                                                    <input type="text" class="form-control" id="shippingVoivodeship" placeholder="Województwo" th:name="userShippingVoivodeship" required="required" th:value="${userShipping.userShippingVoivodeship}"/>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-6">
+                                                <div class="form-group">
+                                                    <label for="shippingPostcode">* Kod Pocztowy</label>
+                                                    <input type="text" class="form-control" id="shippingPostcode" placeholder="00-000"
+                                                           th:name="userShippingPostcode" required="required" th:value="${userShipping.userShippingPostcode}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shippingHouseNumber">* Numer domu</label>
+                                                    <input type="text" class="form-control" id="shippingHouseNumber" placeholder="Numer domu"
+                                                           th:name="userShippingHouseNumber" required="required" th:value="${userShipping.userShippingHouseNumber}"/>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="shippingApartmentNumber">Numer mieszkania</label>
+                                                    <input type="text" class="form-control" id="shippingApartmentNumber" placeholder="Numer domu"
+                                                           th:name="userShippingApartmentNumber" th:value="${userShipping.userShippingApartmentNumber}"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary" type="submit">Zapisz</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>

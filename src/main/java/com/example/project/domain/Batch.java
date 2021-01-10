@@ -38,5 +38,4 @@ public class Batch {
 
     @Column(name = "ID_MAGAZYNU")
     private int warehouse;
-
 }

@@ -1,17 +1,19 @@
 package com.example.project.service;
 
-import com.example.project.domain.User;
-import com.example.project.domain.UserBilling;
-import com.example.project.domain.UserPayment;
-import com.example.project.domain.UserShipping;
+import com.example.project.domain.*;
 import com.example.project.domain.security.PasswordResetToken;
 import com.example.project.domain.security.UserRole;
 import com.example.project.repository.*;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -57,6 +59,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    @Cascade({CascadeType.ALL})
     public User createUser(User user, Set<UserRole> userRoles) throws Exception{
         User localUser = userRepository.findByUsername(user.getUsername());
 
@@ -68,6 +71,13 @@ public class UserServiceImpl implements UserService{
             }
 
             user.getUserRoles().addAll(userRoles);
+
+            ShoppingCart shoppingCart = new ShoppingCart();
+            shoppingCart.setUser(user);
+            user.setShoppingCart(shoppingCart);
+
+            user.setUserShippingList(new ArrayList<UserShipping>());
+            user.setUserPaymentList(new ArrayList<UserPayment>());
 
             localUser = userRepository.save(user);
         }

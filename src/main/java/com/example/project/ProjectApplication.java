@@ -25,13 +25,13 @@ public class ProjectApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        /*Creating test user
+        /* Creating test user
         User user1 = new User();
         user1.setFirstName("Test");
         user1.setLastName("test");
-        user1.setUsername("testusername");
-        user1.setPassword(SecurityUtility.passwordEncoder().encode("p"));
-        user1.setEmail("test@gmail.com");
+        user1.setUsername("testowy");
+        user1.setPassword(SecurityUtility.passwordEncoder().encode("test"));
+        user1.setEmail("projectto1@outlook.com");
         Set<UserRole> userRoles = new HashSet<>();
         Role role1 = new Role();
         role1.setRoleId(1);
@@ -39,7 +39,6 @@ public class ProjectApplication implements CommandLineRunner {
         userRoles.add(new UserRole(user1, role1));
 
         userService.createUser(user1, userRoles);
-
          */
     }
 

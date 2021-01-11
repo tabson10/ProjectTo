@@ -10,7 +10,7 @@ public class UserBilling {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_adres")
+    @Column(name = "id")
     private int id;
 
     @Column(name = "imie_nazwisko")

@@ -1,10 +1,11 @@
 package com.example.project.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @Entity(name = "partia")
@@ -25,7 +26,7 @@ public class Batch {
     private String price;
 
     @Column(name = "ilosc")
-    private String quantity;
+    private int quantity;
 
     @Column(name = "opis", columnDefinition = "text")
     private String description;
@@ -38,4 +39,8 @@ public class Batch {
 
     @Column(name = "ID_MAGAZYNU")
     private int warehouse;
+
+    @OneToMany(mappedBy = "batch")
+    @JsonIgnore
+    private List<BatchToCartItem> bookToCartItemList;
 }

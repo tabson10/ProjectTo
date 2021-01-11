@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.w3.org/1000/xhtml">
+<head th:replace="common/header :: common-header" />
+
+<body>
+<div th:replace="common/header :: navbar" />
+
+<div class="container">
+    <div class="row" style="margin-bottom: -100px;">
+        <div class="col-xs-8">
+            <h2 class="section-headline">
+                <h2 class="section-headline"><span>Przeglądaj</span></h2>
+            </h2>
+        </div>
+        <div class="col-xs-4">
+
+        </div>
+    </div>
+    <hr style="position: absolute; width: 90%; height: 6px; background-color: #333; z-index: -1; margin-top: 70px;"/>
+    <div class="row" style="margin-top: 10px;">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-6 text-left">
+                    <a class="btn btn-primary" th:href="@{/browse}">Kontynuuj zakupy</a>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <a class="btn btn-primary" th:href="@{/checkout(id=${shoppingCart.id})}">Zapłać</a>
+                </div>
+                <br />
+                <div th:if="${notEnoughStock}" class="alert alert-warning">
+                    Niektóre produkty nie są dostępne w wystarczających ilościach. Zmień ilość produktów.
+                </div>
+                <div th:if="${emptyCart}" class="alert alert-warning">
+                    Twój koszyk jest pusty. Dodaj produkty do koszyka.
+                </div>
+
+                <br /><br />
+                <div class="row">
+                    <div class="col-xs-8"><h4>Produkty</h4></div>
+                    <div class="col-xs-2"><h4>Cena</h4></div>
+                    <div class="col-xs-2"><h4>Ilość</h4></div>
+                </div>
+
+                <!-- -----------------Wyswietlanie produktow w koszyku------------ -->
+                <div class="row" th:each="cartItem: ${cartItemList}">
+                    <form th:action="@{/shoppingCart/updateCartItem}" method="post">
+                        <hr />
+                        <div class="col-xs-2">
+                            <a th:href="@{batchDetail(id=${cartItem.batch.batchId})}">
+                                <img class="img-responsive" th:src="#{adminPath}+@{/img/batch/}+${cartItem.batch.batchId}+'.png'" />
+                            </a>
+                            <p th:if="${cartItem.batch.quantity&gt;10}" style="color: green;">Dostępne</p>
+                            <p th:if="${cartItem.batch.quantity&lt;10 and cartItem.batch.quantity&gt;0}" style="color: darkgreen;">Tylko
+                                <span th:text="${cartItem.batch.quantity}"></span> kg dostępne</p>
+                            <p th:if="${cartItem.batch.quantity==10}" style="color: darkred;">Niedostępne</p>
+                        </div>
+
+                        <div class="col-xs-2">
+                            <h5 style="color: #db3208; font-size: large">zł<span th:text="${cartItem.batch.price}"
+                                                                                 th:style="${cartItem.batch.quantity}==0? 'text-decoration: line-through' : ''"></span></h5>
+                        </div>
+                        <div class="col-xs-2">
+                            <input hidden="hidden" name="id" th:value="${cartItem.id}" />
+                            <input th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.batch.quantity==0}" class="form-control cartItemQty" th:value="${cartItem.qty}" />
+                            <button style="display: none" th:id="'update-item-'+${cartItem.id}" type="submit" class="btn btn-warning btn-xs">Aktualizuj</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <hr />
+                    <h4 class="col-xs-12 text-right"><strong style="font-size: large;">Łączna suma (<span th:text="${#lists.size(cartItemList)}"></span> produktów):
+                    </strong><span style="color: #db3208; font-size: large;"><span th:text="${shoppingCart.grandTotal}"></span> zł</span></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<div th:replace="common/header :: body-bottom-scripts" />
+</body>
+</html>

@@ -43,6 +43,17 @@ public class User implements UserDetails {
     @Column
     private boolean enabled=true;
 
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    private ShoppingCart shoppingCart;
+
+    public ShoppingCart getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(ShoppingCart shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<UserShipping> userShippingList;
 

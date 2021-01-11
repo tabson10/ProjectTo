@@ -17,19 +17,19 @@ public class Billing {
     private String billingAddressName;
 
     @Column(name = "miasto")
-    private String billingCity;
+    private String billingAddressCity;
 
     @Column(name = "wojewodztwo")
     private String billingAddressVoivodeship;
 
     @Column(name = "ulica")
-    private String billingStreet;
+    private String billingAddressStreet;
 
     @Column(name = "kod_pocztowy")
     private String billingAddressPostcode;
 
     @Column(name = "nr_domu")
-    private String billingHouseNumber;
+    private String billingAddressHouseNumber;
 
     @Column(name = "nr_mieszkania")
     private String billingAddressApartmentNumber;

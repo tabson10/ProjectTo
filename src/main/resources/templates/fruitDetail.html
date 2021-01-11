@@ -26,6 +26,7 @@
                 <img class="img-responsive browse-batch" th:src="#{adminPath}+@{/img/batch/}+${batch.batchId}+'.png'" />
             </div>
             <div class="col-xs-9">
+                <h4 th:if="${addBatchSuccess}" style="color: forestgreen">Dodano do koszyka.</h4>
                 <h3 th:text="${batch.type}">Gatunek: </h3>
                 <div class="row">
                     <div class="col-xs-5">

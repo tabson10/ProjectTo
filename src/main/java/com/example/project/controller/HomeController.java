@@ -428,7 +428,6 @@ public class HomeController {
             String username = principal.getName();
             User user = userService.findByUsername(username);
             model.addAttribute("user", user);
-            System.out.println("nazwa uzytkownika: "+username);
         }
 
         List<Batch> batchList = batchService.findAll();
@@ -449,7 +448,6 @@ public class HomeController {
             model.addAttribute("user", user);
         }
 
-        System.out.println("teraz ciekaew id: "+ batchId);
         Optional<Batch> batch = batchService.findById(batchId);
 
         model.addAttribute("batch", batch.get());

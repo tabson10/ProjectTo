@@ -223,35 +223,35 @@
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label for="billingName">* Imię i Nazwisko</label>
-                                                    <input type="text" class="form-control" id="billingName" placeholder="Imię i nazwisko" th:name="billingAddressName" required="required" th:value="${billing.billingAddressName}"/>
+                                                    <input type="text" class="form-control billingAddress" id="billingName" placeholder="Imię i nazwisko" th:name="billingAddressName" required="required" th:value="${billing.billingAddressName}"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="billingStreet">* Ulica</label>
-                                                    <input type="text" class="form-control" id="billingStreet" placeholder="Ulica" th:name="billingAddressStreet" required="required" th:value="${billing.billingAddressStreet}"/>
+                                                    <input type="text" class="form-control billingAddress" id="billingStreet" placeholder="Ulica" th:name="billingAddressStreet" required="required" th:value="${billing.billingAddressStreet}"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="billingCity">* Miasto</label>
-                                                    <input type="text" class="form-control" id="billingCity" placeholder="Miasto" th:name="billingAddressCity" required="required" th:value="${billing.billingAddressCity}"/>
+                                                    <input type="text" class="form-control billingAddress" id="billingCity" placeholder="Miasto" th:name="billingAddressCity" required="required" th:value="${billing.billingAddressCity}"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="billingVoivodeship">* Województwo</label>
-                                                    <input type="text" class="form-control" id="billingVoivodeship" placeholder="Województwo" th:name="billingAddressVoivodeship" required="required" th:value="${billing.billingAddressVoivodeship}"/>
+                                                    <input type="text" class="form-control billingAddress" id="billingVoivodeship" placeholder="Województwo" th:name="billingAddressVoivodeship" required="required" th:value="${billing.billingAddressVoivodeship}"/>
                                                 </div>
                                             </div>
                                             <div class="col-xs-6">
                                                 <div class="form-group">
                                                     <label for="billingPostcode">* Kod Pocztowy</label>
-                                                    <input type="text" class="form-control" id="billingPostcode" placeholder="00-000"
+                                                    <input type="text" class="form-control billingAddress" id="billingPostcode" placeholder="00-000"
                                                            th:name="billingAddressPostcode" required="required" th:value="${billing.billingAddressPostcode}"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="billingHouseNumber">* Numer domu</label>
-                                                    <input type="text" class="form-control" id="billingHouseNumber" placeholder="Numer domu"
+                                                    <input type="text" class="form-control billingAddress" id="billingHouseNumber" placeholder="Numer domu"
                                                            th:name="billingAddressHouseNumber" required="required" th:value="${billing.billingAddressHouseNumber}"/>
                                                 </div>
                                                 <div class="form-group">
                                                     <label for="billingApartmentNumber">Numer mieszkania</label>
-                                                    <input type="text" class="form-control" id="billingApartmentNumber" placeholder="Numer domu"
+                                                    <input type="text" class="form-control billingAddress" id="billingApartmentNumber" placeholder="Numer domu"
                                                            th:name="billingAddressApartmentNumber" th:value="${billing.billingAddressApartmentNumber}"/>
                                                 </div>
                                             </div>

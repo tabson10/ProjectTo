@@ -4,10 +4,7 @@ import com.example.project.domain.*;
 import com.example.project.domain.security.PasswordResetToken;
 import com.example.project.domain.security.Role;
 import com.example.project.domain.security.UserRole;
-import com.example.project.service.BatchService;
-import com.example.project.service.UserPaymentService;
-import com.example.project.service.UserService;
-import com.example.project.service.UserShippingService;
+import com.example.project.service.*;
 import com.example.project.service.impl.UserSecurityService;
 import com.example.project.utility.MailConstructor;
 import com.example.project.utility.SecurityUtility;
@@ -20,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
@@ -52,6 +50,12 @@ public class HomeController {
 
     @Autowired
     private UserShippingService userShippingService;
+
+    @Autowired
+    private CartItemService cartItemService;
+
+    @Autowired
+    private OrderService orderService;
 
     @RequestMapping("/")
     public String index() {
@@ -179,7 +183,7 @@ public class HomeController {
         model.addAttribute("user", user);
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
-        //model.addAttribute("orderList", user.getOrderList());
+        model.addAttribute("orderList", user.getOrderList());
 
         UserShipping userShipping = new UserShipping();
         model.addAttribute("userShipping", userShipping);
@@ -198,7 +202,7 @@ public class HomeController {
         model.addAttribute("user", user);
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
-        //model.addAttribute("orderList", user.getOrderList());
+        model.addAttribute("orderList", user.getOrderList());
 
         model.addAttribute("listOfCreditCards", true);
         model.addAttribute("classActiveShipping", true);
@@ -221,7 +225,7 @@ public class HomeController {
 
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
-        //model.addAttribute("orderList", user.getOrderList());
+        model.addAttribute("orderList", user.getOrderList());
 
         return "myProfile";
     }
@@ -234,6 +238,7 @@ public class HomeController {
         model.addAttribute("user", user);
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
+        model.addAttribute("orderList", user.getOrderList());
         model.addAttribute("listOfCreditCards", true);
         model.addAttribute("classActiveShipping", true);
         model.addAttribute("listOfShippingAddresses", true);
@@ -258,6 +263,7 @@ public class HomeController {
 
             model.addAttribute("userPaymentList", user.getUserPaymentList());
             model.addAttribute("userShippingList", user.getUserShippingList());
+            model.addAttribute("orderList", user.getOrderList());
 
             return "myProfile";
         }
@@ -280,6 +286,7 @@ public class HomeController {
 
             model.addAttribute("userPaymentList", user.getUserPaymentList());
             model.addAttribute("userShippingList", user.getUserShippingList());
+            model.addAttribute("orderList", user.getOrderList());
 
             return "myProfile";
         }
@@ -299,6 +306,7 @@ public class HomeController {
 
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
+        model.addAttribute("orderList", user.getOrderList());
 
         return "myProfile";
     }
@@ -309,7 +317,7 @@ public class HomeController {
         model.addAttribute("user", user);
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
-        //model.addAttribute("orderList", user.getOrderList());
+        model.addAttribute("orderList", user.getOrderList());
 
         model.addAttribute("listOfCreditCards", true);
         model.addAttribute("classActiveBilling", true);
@@ -335,7 +343,7 @@ public class HomeController {
 
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
-        //model.addAttribute("orderList", user.getOrderList());
+        model.addAttribute("orderList", user.getOrderList());
 
         return "myProfile";
     }
@@ -352,6 +360,7 @@ public class HomeController {
         model.addAttribute("listOfCreditCards", true);
         model.addAttribute("classActiveBilling", true);
         model.addAttribute("listOfShippingAddresses", true);
+        model.addAttribute("orderList", user.getOrderList());
 
         return "myProfile";
     }
@@ -372,6 +381,7 @@ public class HomeController {
             model.addAttribute("addNewCreditCard", true);
             model.addAttribute("classActiveBilling", true);
             model.addAttribute("listOfShippingAddresses", true);
+            model.addAttribute("orderList", user.getOrderList());
 
             model.addAttribute("userPaymentList", user.getUserPaymentList());
             model.addAttribute("userShippingList", user.getUserShippingList());
@@ -397,6 +407,7 @@ public class HomeController {
 
             model.addAttribute("userPaymentList", user.getUserPaymentList());
             model.addAttribute("userShippingList", user.getUserShippingList());
+            model.addAttribute("orderList", user.getOrderList());
 
             return "myProfile";
         }
@@ -416,6 +427,7 @@ public class HomeController {
 
         model.addAttribute("userPaymentList", user.getUserPaymentList());
         model.addAttribute("userShippingList", user.getUserShippingList());
+        model.addAttribute("orderList", user.getOrderList());
 
         return "myProfile";
     }
@@ -461,4 +473,88 @@ public class HomeController {
         return "fruitDetail";
     }
 
+    @RequestMapping(value = "/updateUserInfo", method = RequestMethod.POST)
+    public String updateUserInfo(@ModelAttribute("user") User user,@ModelAttribute("newPassword") String newPassword, Model model) throws Exception {
+        Optional<User> currentUser = userService.findById(user.getId());
+
+        if(currentUser == null) {
+            throw new Exception("User not found");
+        }
+
+        if(userService.findByEmail(user.getEmail()) != null) {
+            if(userService.findByEmail(user.getEmail()).getId() != currentUser.get().getId()) {
+                model.addAttribute("emailExists", true);
+                return "myProfile";
+            }
+        }
+
+        if(userService.findByUsername(user.getUsername()) != null) {
+            if(userService.findByUsername(user.getUsername()).getId() != currentUser.get().getId()) {
+                model.addAttribute("usernameExists", true);
+                return "myProfile";
+            }
+        }
+        
+        if(newPassword != null && !newPassword.isEmpty() && !newPassword.equals("")) {
+            BCryptPasswordEncoder passwordEncoder = SecurityUtility.passwordEncoder();
+            String dbPassword = currentUser.get().getPassword();
+            if(passwordEncoder.matches(user.getPassword(), dbPassword)) {
+                currentUser.get().setPassword(passwordEncoder.encode(newPassword));
+            } else {
+                model.addAttribute("incorrectPassword", true);
+                return "myProfile";
+            }
+        }
+
+        currentUser.get().setFirstName(user.getFirstName());
+        currentUser.get().setLastName(user.getLastName());
+        currentUser.get().setUsername(user.getUsername());
+        currentUser.get().setEmail(user.getEmail());
+
+        userService.save(currentUser.get());
+
+        model.addAttribute("updateSuccess", true);
+        model.addAttribute("user", currentUser.get());
+        model.addAttribute("classActiveEdit", true);
+
+        UserDetails userDetails = userSecurityService.loadUserByUsername(currentUser.get().getUsername());
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        return "myProfile";
+    }
+
+    @RequestMapping("/orderDetail")
+    public String orderDetail(@RequestParam("id") int orderId, Principal principal, Model model) {
+        User user = userService.findByUsername(principal.getName());
+        Optional<Order> order = orderService.findOne(orderId);
+
+        if(order.get().getUser().getId() != user.getId()) {
+            return "badRequestPage";
+        } else {
+            List<CartItem> cartItemList = cartItemService.findByOrder(order.get());
+            model.addAttribute("cartItemList", cartItemList);
+            model.addAttribute("user", user);
+            model.addAttribute("order", order.get());
+
+            model.addAttribute("userPaymentList", user.getUserPaymentList());
+            model.addAttribute("userShippingList", user.getUserShippingList());
+            model.addAttribute("orderList", user.getOrderList());
+
+            UserShipping userShipping = new UserShipping();
+
+            model.addAttribute("userShipping", userShipping);
+
+            model.addAttribute("listOfShippingAddresses", true);
+            model.addAttribute("classActiveOrders", true);
+            model.addAttribute("listOfCreditCards", true);
+            model.addAttribute("displayOrderDetail", true);
+
+
+            return "myProfile";
+        }
+
+    }
 }

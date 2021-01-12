@@ -11,10 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
-import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -56,6 +55,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(int id) {
+        return userRepository.findById(id);
     }
 
     @Override

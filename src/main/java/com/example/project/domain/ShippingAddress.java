@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.*;
 
-@Data
 @Entity(name = "adres_wysylki")
 public class ShippingAddress {
 
@@ -34,7 +33,78 @@ public class ShippingAddress {
     @Column(name = "nr_mieszkania")
     private String shippingAddressApartmentNumber;
 
-    @ManyToOne
-    @JoinColumn(name = "ID_UZYTKOWNIKA")
-    private User user;
+    @OneToOne
+    private Order order;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getShippingAddressName() {
+        return shippingAddressName;
+    }
+
+    public void setShippingAddressName(String shippingAddressName) {
+        this.shippingAddressName = shippingAddressName;
+    }
+
+    public String getShippingAddressCity() {
+        return shippingAddressCity;
+    }
+
+    public void setShippingAddressCity(String shippingAddressCity) {
+        this.shippingAddressCity = shippingAddressCity;
+    }
+
+    public String getShippingAddressVoivodeship() {
+        return shippingAddressVoivodeship;
+    }
+
+    public void setShippingAddressVoivodeship(String shippingAddressVoivodeship) {
+        this.shippingAddressVoivodeship = shippingAddressVoivodeship;
+    }
+
+    public String getShippingAddressStreet() {
+        return shippingAddressStreet;
+    }
+
+    public void setShippingAddressStreet(String shippingAddressStreet) {
+        this.shippingAddressStreet = shippingAddressStreet;
+    }
+
+    public String getShippingAddressPostcode() {
+        return shippingAddressPostcode;
+    }
+
+    public void setShippingAddressPostcode(String shippingAddressPostcode) {
+        this.shippingAddressPostcode = shippingAddressPostcode;
+    }
+
+    public String getShippingAddressHouseNumber() {
+        return shippingAddressHouseNumber;
+    }
+
+    public void setShippingAddressHouseNumber(String shippingAddressHouseNumber) {
+        this.shippingAddressHouseNumber = shippingAddressHouseNumber;
+    }
+
+    public String getShippingAddressApartmentNumber() {
+        return shippingAddressApartmentNumber;
+    }
+
+    public void setShippingAddressApartmentNumber(String shippingAddressApartmentNumber) {
+        this.shippingAddressApartmentNumber = shippingAddressApartmentNumber;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
 }

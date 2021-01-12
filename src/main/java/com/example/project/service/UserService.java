@@ -7,6 +7,7 @@ import com.example.project.domain.UserShipping;
 import com.example.project.domain.security.PasswordResetToken;
 import com.example.project.domain.security.UserRole;
 
+import java.util.Optional;
 import java.util.Set;
 
 public interface UserService {
@@ -17,6 +18,8 @@ public interface UserService {
     User findByUsername(String username);
 
     User findByEmail(String email);
+
+    Optional<User> findById(int id);
 
     User createUser(User user, Set<UserRole> userRoles) throws Exception;
 

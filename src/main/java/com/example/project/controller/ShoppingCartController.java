@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 import java.util.List;
@@ -64,5 +65,19 @@ public class ShoppingCartController {
         model.addAttribute("addBatchSuccess", true);
 
         return "redirect:/fruitDetail/"+batch1.get().getBatchId();
+    }
+
+    @RequestMapping("/removeItem")
+    public String removeItem(@RequestParam("id") int itemId, Model model, Principal principal) {
+        User user = userService.findByUsername(principal.getName());
+        ShoppingCart shoppingCart = user.getShoppingCart();
+        List<CartItem> cartItemList = shoppingCart.getCartItemList();
+
+        shoppingCartService.clearShoppingCart(shoppingCart);
+
+        model.addAttribute("shoppingCart", shoppingCart);
+        model.addAttribute("cartItemList", cartItemList);
+
+        return "shoppingCart";
     }
 }

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="pl" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" th:href="@{https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css}"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+<p>Drogi <span th:text="${user.firstName}"></span>,</p>
+<p>Dziękujemy za korzystanie z naszego sklepu</p>
+<p>Numer twojego zamówienia: <strong>#<span th:text="${order.id}"></span></strong>. Szczególy zamówienia:</p>
+<h2>Szczegóły zamównienia #<span th:text="${order.id}"></span></h2>
+<hr />
+
+<table>
+    <tr>
+        <th>Dane do faktury</th>
+        <th>Informacje o płatności</th>
+        <th>Adres wysyłki</th>
+    </tr>
+    <tr>
+        <td>
+            <span th:text="${order.billing.billingAddressName}"></span><br />
+            <span th:text="${order.billing.billingAddressStreet}"></span> <span th:text="${order.billing.billingAddressHouseNumber}"></span>/<span th:text="${order.billing.billingAddressApartmentNumber}"></span><br />
+            <span th:text="${order.billing.billingAddressPostcode}"></span> <span th:text="${order.billing.billingAddressCity}"></span><br />
+            <span th:text="${order.billing.billingAddressVoivodeship}"></span>
+        </td>
+        <td>
+            <span th:text="${order.payment.holderName}"></span><br />
+            <span th:text="${order.payment.type}"></span><br />
+            <span th:text="${order.payment.cardNumber}"></span><br />
+            <span th:text="${order.payment.expiryMonth}"></span><br />
+            <span th:text="${order.payment.expiryYear}"></span><br />
+        </td>
+        <td>
+            <span th:text="${order.shippingAddress.shippingAddressName}"></span><br />
+            <span th:text="${order.shippingAddress.shippingAddressStreet}"></span> <span th:text="${order.shippingAddress.shippingAddressHouseNumber}"></span>/<span th:text="${order.shippingAddress.shippingAddressApartmentNumber}"></span><br />
+            <span th:text="${order.shippingAddress.shippingAddressPostcode}"></span> <span th:text="${order.shippingAddress.shippingAddressCity}"></span><br />
+            <span th:text="${order.shippingAddress.shippingAddressVoivodeship}"></span>
+        </td>
+    </tr>
+</table>
+
+<h3><strong>Podsumowanie zamówienia</strong></h3>
+<table>
+    <thead>
+        <tr>
+            <td>
+                <strong>Nazwa produktu</strong>
+            </td>
+            <td class="text-center">
+                <strong>Cena (zł/kg)</strong>
+            </td>
+            <td class="text-center">
+                <strong>Ilość (kg)</strong>
+            </td>
+            <td class="text-center">
+                <strong>Cena</strong>
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="cartItem: ${cartItemList}">
+            <td>
+                <span data-th-text="${cartItem.batch.type}"></span>
+            </td>
+            <td class="text-center" data-th-text="${cartItem.batch.price}"></td>
+            <td class="text-center" data-th-text="${cartItem.qty}"></td>
+            <td class="text-center" data-th-text="${cartItem.subtotal}"></td>
+        </tr>
+        <tr>
+            <td class="highrow"></td>
+            <td class="highrow"></td>
+            <td class="highrow text-center"><strong>Całkowita cena</strong></td>
+            <td class="highrow text-right" data-th-text="${order.orderTotal}"></td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<p>Pozdrawiamy</p>
+</body>
+</html>

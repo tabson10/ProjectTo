@@ -19,38 +19,48 @@
     <hr style="position: absolute; width: 90%; height: 6px; background-color: #333; z-index: -1; margin-top: 70px;"/>
 
     <div class="row" style="margin-top: 60px;">
-        <div class="col-xs-9 col-xs-offset-3">
-            <div th:if="${emptyList}">
-                <h5 style="font-style: italic">Brak wyników</h5>
+        <div class="col-xs-12">
+            <div class="col-xs-3">
+                <h3><label for="category">Kategoria</label></h3>
+                <div class="list-group" id="category">
+                    <a th:href="@{/browse(category='all')}" th:classapend="${activeAll}? 'active'" class="list-group-item">Wszystko</a>
+                    <a th:href="@{/searchByCategory(category='1')}" th:classapend="${active1}? 'active'" class="list-group-item">Jabłka</a>
+                    <a th:href="@{/searchByCategory(category='2')}" th:classapend="${active2}? 'active'" class="list-group-item">Gruszki</a>
+                </div>
             </div>
+            <div class="col-xs-9">
+                <div th:if="${emptyList}">
+                    <h5 style="font-style: italic">Brak wyników</h5>
+                </div>
 
-            <table border="0" id="batchList">
-                <thead><tr><th></th></tr></thead>
-                <tbody>
-                <tr class="batch-item" data-th-each="batch: ${batchList}">
-                <td>
-                    <div th:if="${batch != null}">
-                        <div class="row">
-                            <div class="col-xs-3">
-                                <div class="panel panel-default" style="border-width: 5px;">
-                                    <div class="panel-body">
-                                        <a th:href="@{/fruitDetail/}+${batch.batchId}"><img class="img-responsive browse" th:src="#{adminPath}+@{/img/batch/}+${batch.batchId}+'.png'" /></a>
+                <table id="batchList" border="0">
+                    <thead><tr><th></th></tr></thead>
+                    <tbody>
+                    <tr class="batch-item" data-th-each="batch: ${batchList}">
+                    <td>
+                        <div th:if="${batch != null}">
+                            <div class="row">
+                                <div class="col-xs-3">
+                                    <div class="panel panel-default" style="border-width: 5px;">
+                                        <div class="panel-body">
+                                            <a th:href="@{/fruitDetail/}+${batch.batchId}"><img class="img-responsive browse" th:src="#{adminPath}+@{/img/batch/}+${batch.batchId}+'.png'" /></a>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xs-6">
-                                <a th:href="@{/fruitDetail/}+${batch.batchId}"><h4 th:text="${batch.type}"></h4></a>
-                                <span style="font-size: x-large; color: #db3208;">zł
-                                    <span th:text="${#numbers.formatDecimal(batch.price, 0, 'COMMA', 2, 'POINT')}"></span></span><br />
-                                <span>Ilość: </span><span th:text="${batch.quantity}"></span><span> kg</span>
-                                <p th:text="${#strings.abbreviate(batch.description, 500)}"></p>
+                                <div class="col-xs-6">
+                                    <a th:href="@{/fruitDetail/}+${batch.batchId}"><h4 th:text="${batch.type}"></h4></a>
+                                    <span style="font-size: x-large; color: #db3208;">zł
+                                        <span th:text="${#numbers.formatDecimal(batch.price, 0, 'COMMA', 2, 'POINT')}"></span></span><br />
+                                    <span>Ilość: </span><span th:text="${batch.quantity}"></span><span> kg</span>
+                                    <p th:text="${#strings.abbreviate(batch.description, 500)}"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </td>
-                </tr>
-                </tbody>
-            </table>
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
@@ -58,5 +68,10 @@
 </div>
 
 <div th:replace="common/header :: body-bottom-scripts" />
+<script>
+    $(document).ready( function () {
+        $('#batchList').DataTable();
+    } );
+</script>
 </body>
 </html>

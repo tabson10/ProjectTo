@@ -189,7 +189,7 @@ public class HomeController {
         model.addAttribute("userShipping", userShipping);
 
         model.addAttribute("listOfCreditCards", true);
-        model.addAttribute("listOfShippingAdresses", true);
+        model.addAttribute("listOfShippingAddresses", true);
 
         model.addAttribute("classActiveEdit", true);
 
@@ -260,6 +260,7 @@ public class HomeController {
             model.addAttribute("addNewShippingAddress", true);
             model.addAttribute("classActiveShipping", true);
             model.addAttribute("listOfCreditCards", true);
+            model.addAttribute("listOfShippingAddresses", true);
 
             model.addAttribute("userPaymentList", user.getUserPaymentList());
             model.addAttribute("userShippingList", user.getUserShippingList());
@@ -444,6 +445,7 @@ public class HomeController {
 
         List<Batch> batchList = batchService.findAll();
         model.addAttribute("batchList", batchList);
+        model.addAttribute("activeAll", true);
         List<Integer> qtyList = Arrays.asList(1,5,10,20,30,40,50,60,70,80,90,100);
 
 

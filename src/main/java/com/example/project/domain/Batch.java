@@ -42,5 +42,5 @@ public class Batch {
 
     @OneToMany(mappedBy = "batch")
     @JsonIgnore
-    private List<BatchToCartItem> bookToCartItemList;
+    private List<BatchToCartItem> batchToCartItemList;
 }
